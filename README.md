@@ -10,15 +10,13 @@ source .env/bin/activate
 pip install -r req.txt
 ```
 
-## 
-
-## [Fasion MNIST](https://www.kaggle.com/zalando-research/fashionmnist)
+## [Fashion MNIST](https://www.kaggle.com/zalando-research/fashionmnist)
 
 ### Benchmark
 
-| Method | Preprocessing | Fasion Test Accuracy | MNIST Test Accuracy |
-|:--:|:--:|:--:|:--:|
-|TBA|TBA|TBA|TBA|
+| Method |   Preprocessing   | fashion Test Accuracy | MNIST Test Accuracy |
+| :----: | :---------------: | :------------------: | :-----------------: |
+|  CNN   | Data Augmentation |        93.65%        |       99.98%        |
 
 
 ## License
