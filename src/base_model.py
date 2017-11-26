@@ -1,8 +1,12 @@
+import keras
 from keras.utils import np_utils
 from keras.models import Sequential, Model, model_from_json
 from keras.layers import Input, Dense, Dropout, Activation, Lambda
-from keras.layers import Conv2D, MaxPooling2D, Flatten, BatchNormalization
+from keras.layers import Conv2D, MaxPooling2D, Flatten, BatchNormalization, AveragePooling2D
 from keras.layers.advanced_activations import LeakyReLU
+from keras.regularizers import l2
+from keras.applications.mobilenet import MobileNet
+from keras import backend as K
 
 
 def base():
@@ -96,5 +100,84 @@ def base_cnn3(input_shape=(28, 28, 1), classes=10):
     model.add(Dense(classes, activation='softmax'))
     model.compile(loss='categorical_crossentropy',
                   optimizer='adam', metrics=['accuracy'])
+    model.summary()
+    return model
+
+
+def mobilenet():
+    input_image = Input(shape=(28, 28))
+    input_image_ = Lambda(lambda x: K.repeat_elements(
+        K.expand_dims(x, 3), 3, 3))(input_image)
+    base_model = MobileNet(input_tensor=input_image_,
+                           include_top=False, weights='imagenet', pooling='avg')
+    output = Dropout(0.5)(base_model.output)
+    predict = Dense(10, activation='softmax')(output)
+    model = Model(inputs=input_image, outputs=predict)
+    model.summary()
+    return model
+
+
+def resnet():
+    input_size = (28, 28, 1)
+    num_filters = 64
+    num_blocks = 3
+    num_sub_blocks = 2
+
+    # Creating model based on ResNet published archietecture
+    inputs = Input(shape=input_size)
+    x = Conv2D(num_filters, padding='same',
+               kernel_initializer='he_normal',
+               kernel_size=7, strides=2,
+               kernel_regularizer=l2(1e-4))(inputs)
+    x = BatchNormalization()(x)
+    x = Activation('relu')(x)
+
+    # Check by applying max pooling later (setting it false as size of image is small i.e. 28x28)
+    # x = MaxPooling2D(pool_size=3, padding='same', strides=2)(x)
+    # Creating Conv base stack
+
+    # Instantiate convolutional base (stack of blocks).
+    for i in range(num_blocks):
+        for j in range(num_sub_blocks):
+            strides = 1
+            is_first_layer_but_not_first_block = j == 0 and i > 0
+            if is_first_layer_but_not_first_block:
+                strides = 2
+            # Creating residual mapping using y
+            y = Conv2D(num_filters,
+                       kernel_size=3,
+                       padding='same',
+                       strides=strides,
+                       kernel_initializer='he_normal',
+                       kernel_regularizer=l2(1e-4))(x)
+            y = BatchNormalization()(y)
+            y = Activation('relu')(y)
+            y = Conv2D(num_filters,
+                       kernel_size=3,
+                       padding='same',
+                       kernel_initializer='he_normal',
+                       kernel_regularizer=l2(1e-4))(y)
+            y = BatchNormalization()(y)
+            if is_first_layer_but_not_first_block:
+                x = Conv2D(num_filters,
+                           kernel_size=1,
+                           padding='same',
+                           strides=2,
+                           kernel_initializer='he_normal',
+                           kernel_regularizer=l2(1e-4))(x)
+            # Adding back residual mapping
+            x = keras.layers.add([x, y])
+            x = Activation('relu')(x)
+
+        num_filters = 2 * num_filters
+
+    # Add classifier on top.
+    x = AveragePooling2D()(x)
+    y = Flatten()(x)
+    outputs = Dense(10, activation='softmax',
+                    kernel_initializer='he_normal')(y)
+
+    # Instantiate and compile model.
+    model = Model(inputs=inputs, outputs=outputs)
     model.summary()
     return model

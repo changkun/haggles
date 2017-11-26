@@ -10,6 +10,7 @@ TRAIN = os.path.join(os.path.dirname(__file__),
                      '../data/fashion-mnist/train.csv')
 TEST = os.path.join(os.path.dirname(__file__),
                     '../data/fashion-mnist/test.csv')
+random_state = 2017
 
 
 def load_data():
@@ -20,7 +21,7 @@ def load_data():
     x = x.astype(dtype=float)
     y = y.astype(dtype=float)
     x_train, x_val, y_train, y_val = train_test_split(
-        x, y, test_size=0.1, random_state=42)
+        x, y, test_size=0.1, random_state=random_state)
     return x_train, x_val, y_train, y_val
 
 
@@ -46,7 +47,6 @@ def preprocessing():
     y_train = np_utils.to_categorical(y_train)
     y_val = np_utils.to_categorical(y_val)
 
-    num_classes = y_train.shape[1]
     x_train = x_train.reshape(x_train.shape[0], 28, 28, 1)
     x_val = x_val.reshape(x_val.shape[0], 28, 28, 1)
     x_test = x_test.reshape(x_test.shape[0], 28, 28, 1)

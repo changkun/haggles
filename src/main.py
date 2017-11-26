@@ -1,46 +1,25 @@
-import numpy as np
 import os
 import csv
+import numpy as np
 import keras
 from keras.utils import np_utils
 from keras.models import Sequential, Model, model_from_json
-from keras.layers import Input, Dense, Dropout, Activation, Lambda
-from keras.layers import Conv2D, MaxPooling2D, Flatten, BatchNormalization
-from keras.layers.advanced_activations import LeakyReLU
 from keras.optimizers import SGD, Adam
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+from keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
 from keras.preprocessing.image import ImageDataGenerator
-from keras.applications.mobilenet import MobileNet
-from keras import backend as K
 
-import base_model
 from data_loader import load_data, load_test, preprocessing
-
+import base_model
 
 batch_size = 128
-epochs = 50
-input_shape = (28, 28, 1)
+epochs = 30
+
 model_weights = os.path.join(os.path.dirname(
     __file__),  '../model/fashion-mnist/cnn.h5')
 model_path = os.path.join(os.path.dirname(
-    __file__),  '../model/fashion-mnist/cnn.h5')
+    __file__),  '../model/fashion-mnist/cnn.json')
 submission_path = os.path.join(os.path.dirname(
     __file__), '../data/fashion-mnist/submission.csv')
-
-
-def mobilenet():
-    # TODO: Fix here
-    input_image = Input(shape=(128, 128))
-    input_image_ = Lambda(lambda x: K.repeat_elements(
-        K.expand_dims(x, 3), 3, 3))(input_image)
-    print(input_image_)
-    base_model = MobileNet(input_tensor=input_image_,
-                           include_top=False, weights='imagenet', pooling='avg')
-    output = Dropout(0.5)(base_model.output)
-    predict = Dense(10, activation='softmax')(output)
-    model = Model(inputs=input_image, outputs=predict)
-    model.summary()
-    return model
 
 
 # 1. preprocessing
@@ -48,7 +27,7 @@ x_train, x_val, y_train, y_val, x_id, x_test = preprocessing()
 
 # 2. model
 model = None
-if os.path.isfile() and os.path.isfile(model_path):
+if os.path.isfile(model_weights) and os.path.isfile(model_path):
     json_file = open(model_path, 'r')
     loaded_model_json = json_file.read()
     json_file.close()
@@ -57,9 +36,10 @@ if os.path.isfile() and os.path.isfile(model_path):
     print('Loaded model from disk')
 else:
     model = base_model.base_cnn3()
+    # model = base_model.resnet()
+    # model = base_model.mobilenet()
     model.compile(loss='categorical_crossentropy',
                   optimizer=Adam(lr=1e-3), metrics=['accuracy'])
-
     gen = ImageDataGenerator(rotation_range=8,
                              width_shift_range=0.08,
                              shear_range=0.3,
@@ -71,9 +51,11 @@ else:
 
     callbacks = [
         EarlyStopping(monitor='val_loss', min_delta=0.0001,
-                      patience=5, verbose=2, mode='auto'),
+                      patience=5, verbose=1, mode='auto'),
         ModelCheckpoint('fashion-mnist.h5', monitor='val_loss',
-                        save_best_only=True, verbose=0)
+                        save_best_only=True, verbose=1),
+        ReduceLROnPlateau(factor=np.sqrt(0.1), cooldown=0,
+                          patience=5, min_lr=0.5e-6)
     ]
 
     # model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs)
