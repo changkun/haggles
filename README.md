@@ -14,10 +14,10 @@ pip install -r req.txt
 
 |         Dataset         | Test Accuracy |
 | :---------------------: | :-----------: |
-|          MNIST          |    99.89%     |
-|      Fashion-MNIST      |    94.01%     |
-| Caltech-101-silhouettes |      65%      |
-|                         |               |
+|          MNIST          |      99%      |
+|      Fashion-MNIST      |      94%      |
+| Caltech-101-silhouettes |      68%      |
+|         CIFAR10         |      90%      |
 |                         |               |
 
 ## License
