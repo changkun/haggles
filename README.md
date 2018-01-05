@@ -10,14 +10,15 @@ source .env/bin/activate
 pip install -r req.txt
 ```
 
-## [Fashion MNIST](https://www.kaggle.com/zalando-research/fashionmnist)
+### Benchmarks
 
-### Benchmark
-
-| Method |   Preprocessing   | fashion Test Accuracy | MNIST Test Accuracy |
-| :----: | :---------------: | :------------------: | :-----------------: |
-|  CNN   | Data Augmentation |        93.65%        |       99.98%        |
-
+|         Dataset         | Test Accuracy |
+| :---------------------: | :-----------: |
+|          MNIST          |    99.89%     |
+|      Fashion-MNIST      |    94.01%     |
+| Caltech-101-silhouettes |      65%      |
+|                         |               |
+|                         |               |
 
 ## License
 
