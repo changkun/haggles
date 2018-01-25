@@ -2,6 +2,26 @@
 
 Project Haggles is my open source solution for kaggle competetions.
 
+## Structure
+
+The repository structured by kaggle competitions name. The folder name inside `data/models/src` will be the competitions name in the url
+For instance, the competition of https://www.kaggle.com/c/compstat will stay in folder `data/compstat, models/compstat, src/compstat`.
+
+```
+├── data
+│   ├── compstat
+│   ├── compstat2
+│   └── compstat3
+├── models
+│   ├── compstat
+│   ├── compstat2
+│   └── compstat3
+└── src
+    ├── compstat
+    ├── compstat2
+    └── compstat3
+```
+
 ## Environment
 
 ```bash
@@ -12,17 +32,16 @@ pip install -r req.txt
 
 ### Benchmarks
 
-|         Dataset         | Test Accuracy |
-| :---------------------: | :-----------: |
-|          MNIST          |      99%      |
-|      Fashion-MNIST      |      94%      |
-| Caltech-101-silhouettes |      68%      |
-|         CIFAR10         |      90%      |
-|                         |               |
+|         Dataset         | Test Accuracy | Competition Name |
+| :---------------------: | :-----------: | :--------------: |
+|          MNIST          |      99%      |                  |
+|      Fashion-MNIST      |      94%      |     compstat     |
+| Caltech-101-silhouettes |      72%      |    compstat2     |
+|        CIFAR-10         |      85%      |    compstat3     |
 
 ## License
 
-The [MIT](LICENSE) License (MIT) Copyright © [2017] Ou Changkun, https://changkun.de
+The [MIT](LICENSE) License (MIT) Copyright © [2017-present] Ou Changkun, https://changkun.de
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
