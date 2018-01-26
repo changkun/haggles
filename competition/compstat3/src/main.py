@@ -11,7 +11,7 @@ class Hyperparams:
     def __init__(self):
         # TODO: configularion file
         self.pretrain = False
-        self.server = False
+        self.fullset = False
         self.architecture = '../model/architecture.json'
         self.inter_model = [
             '../model/intermediate_ep75.h5',
@@ -28,7 +28,7 @@ class Hyperparams:
 def main():
     params = Hyperparams()
 
-    if params.server:
+    if params.fullset:
         (x_train, y_train), (x_val, y_val), (x_pred, x_id) = load_data(dataset_size=1.0)
     else:
         (x_train, y_train), (x_val, y_val), (x_pred, x_id) = load_data(dataset_size=0.1)

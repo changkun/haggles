@@ -4,25 +4,27 @@ Project Haggles is my open source solution for kaggle competetions.
 
 ## Structure
 
-The repository structured by kaggle competitions name. The folder name inside `data/models/src` will be the competitions name in the url
-For instance, the competition of https://www.kaggle.com/c/compstat will stay in folder `data/compstat, models/compstat, src/compstat`.
+The repository structured by kaggle competitions name, every competition contains `data, model` and `src`.
 
 ```
-├── data
-│   ├── compstat
-│   ├── compstat2
-│   └── compstat3
-├── models
-│   ├── compstat
-│   ├── compstat2
-│   └── compstat3
-└── src
-    ├── compstat
-    ├── compstat2
-    └── compstat3
+├── README.md
+├── compstat
+│   ├── data
+│   ├── model
+│   └── src
+├── compstat2
+│   ├── data
+│   ├── model
+│   └── src
+└── compstat3
+    ├── data
+    ├── model
+    └── src
 ```
 
 ## Environment
+
+- Keras2 + TensorFlow (backend) + Scikit-Learn + Numpy + Pandas + h5py + matplotlib ...
 
 ```bash
 virtualenv -p python3 .env
@@ -32,12 +34,12 @@ pip install -r req.txt
 
 ### Benchmarks
 
-|         Dataset         | Test Accuracy | Competition Name |
-| :---------------------: | :-----------: | :--------------: |
-|          MNIST          |      99%      |                  |
-|      Fashion-MNIST      |      94%      |     compstat     |
-| Caltech-101-silhouettes |      72%      |    compstat2     |
-|        CIFAR-10         |      85%      |    compstat3     |
+|         Dataset         | Test Accuracy |             Competition Name             |
+| :---------------------: | :-----------: | :--------------------------------------: |
+|          MNIST          |      99%      |      Arch as same as Fashion-MNIST       |
+|      Fashion-MNIST      |      94%      | [compstat](https://www.kaggle.com/c/compstat) |
+| Caltech-101-silhouettes |      77%      | [compstat2](https://www.kaggle.com/c/compstat2) |
+|        CIFAR-10         |      85%      | [compstat3](https://www.kaggle.com/c/compstat3) |
 
 ## License
 

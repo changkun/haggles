@@ -11,12 +11,12 @@ class Hyperparams:
     def __init__(self):
         # TODO: configularion file
         self.pretrain = False
-        self.server = True
+        self.fullset = True
         self.architecture = '../model/architecture.json'
         self.inter_model = '../model/intermidiate.h5'
         self.submission  = '../data/submission.csv'
         self.batch_size = 128
-        self.epochs = 20
+        self.epochs = 100
         self.input_shape = (28, 28, 1)
         self.classe = 101
 
@@ -24,7 +24,7 @@ class Hyperparams:
 def main():
     params = Hyperparams()
 
-    if params.server:
+    if params.fullset:
         (x_train, y_train), (x_val, y_val), (x_pred, x_id) = load_data(dataset_size=1.0)
     else:
         (x_train, y_train), (x_val, y_val), (x_pred, x_id) = load_data(dataset_size=0.1)
@@ -34,20 +34,27 @@ def main():
 
     if params.pretrain:
         model.load_weights(params.inter_model)
+        model.compile(
+            loss=categorical_crossentropy,
+            optimizer=adam(lr=1e-3),
+            metrics=['accuracy']
+        )
     else:
         generator_train = ImageDataGenerator(
-            rotation_range=15,
-            width_shift_range=0.08,
+            rotation_range=30,
             shear_range=0.3,
+            width_shift_range=0.08,
             height_shift_range=0.08,
-            zoom_range=0.08
+            zoom_range=0.08,
+            horizontal_flip=True,
+            vertical_flip=True,
         ).flow(x_train, y_train, batch_size=params.batch_size)
         
         callbacks = [
-            EarlyStopping(
-                monitor='val_loss', min_delta=0.0001,
-                patience=5, verbose=1, mode='auto'
-            ),
+            # EarlyStopping(
+            #     monitor='val_loss', min_delta=0.0001,
+            #     patience=5, verbose=1, mode='auto'
+            # ),
             ModelCheckpoint(
                 params.inter_model, monitor='val_loss',
                 save_best_only=True, verbose=1
