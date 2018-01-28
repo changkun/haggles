@@ -16,7 +16,7 @@ class Hyperparams:
         self.inter_model = '../model/intermidiate.h5'
         self.submission  = '../data/submission.csv'
         self.batch_size = 128
-        self.epochs = 10
+        self.epochs = 100
         self.input_shape = (28, 28, 1)
         self.classe = 10
 
