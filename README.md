@@ -32,7 +32,17 @@ source .env/bin/activate
 pip install -r req.txt
 ```
 
-### Benchmarks
+### Running
+
+1. Pub data in `<competition_name>/data/`;
+2. Go `src` folder, run `main.py`
+
+```python
+cd competition/<competition_name>/src
+python main.src # with virtualenv activate
+```
+
+###Benchmarks
 
 |         Dataset         | Test Accuracy |             Competition Name             |
 | :---------------------: | :-----------: | :--------------------------------------: |
