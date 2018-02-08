@@ -42,7 +42,7 @@ cd competition/<competition_name>/src
 python main.src # with virtualenv activate
 ```
 
-###Benchmarks
+### Benchmarks
 
 |         Dataset         | Test Accuracy |             Competition Name             |
 | :---------------------: | :-----------: | :--------------------------------------: |
