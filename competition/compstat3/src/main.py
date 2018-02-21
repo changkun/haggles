@@ -11,7 +11,7 @@ class Hyperparams:
     def __init__(self):
         # TODO: configularion file
         self.pretrain = False
-        self.fullset = False
+        self.fullset = True
         self.architecture = '../model/architecture.json'
         self.inter_model = [
             '../model/intermediate_ep75.h5',

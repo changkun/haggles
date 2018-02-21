@@ -54,6 +54,6 @@ def caltech101(input_shape=(28, 28, 1), classes=101):
     x = Flatten()(x)
     x = Dense(512, activation='relu')(x)
     x = BatchNormalization()(x)
-    x = Dense(classes, activation='softmax')(x)
+    y = Dense(classes, activation='softmax')(x)
     model = Model(inputs=inputs, outputs=y)
     return model
